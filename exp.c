@@ -36,8 +36,8 @@ void hexdump(const void* data, size_t size)
     }
 }
 
-int main()
-{
+int main(){
+    printf("Naup ~");
     HANDLE hDevice = CreateFileW(DeviceName, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
 
     if (hDevice == INVALID_HANDLE_VALUE) {
