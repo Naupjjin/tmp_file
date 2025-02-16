@@ -51,7 +51,7 @@ int main()
 
     char outputbuf[0x8] = { 0 };
     
-    DWORD bytesReturned = 8;
+    DWORD bytesReturned = 0;
 
     BOOL result = DeviceIoControl(
         hDevice,
