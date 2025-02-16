@@ -73,8 +73,8 @@ int main()
     );
 
     if (result) {
-        printf("IOCTL command sent successfully\n");
-        hexdump(inputbuf, 0x8);
+        printf("[*] IOCTL command sent successfully\n");
+        printf("[!] LeakData: %llx\n",inputbuf);
     } else {
         printf("Failed to send IOCTL command. Error: %ld\n", GetLastError());
     }
