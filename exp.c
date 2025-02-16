@@ -93,6 +93,7 @@ int main()
     printf("[!] Leak Kernel: 0x%llx\n", leak_kernel);
     printf("[!] Kernel Base: 0x%llx\n", kernel_base);
     
+    printf("Naup ~");
     return 0;
 }
 
