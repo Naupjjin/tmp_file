@@ -47,7 +47,7 @@ int main()
 
     printf("[!] Success open device");
 
-    size_t* inputbuf = (size_t*)calloc(1, 0x100);
+    char inputbuf[0x8];
 
     if (inputbuf == NULL) {
         printf("[X] Memory allocation failed\n");
@@ -55,9 +55,9 @@ int main()
         return 1;
     }
 
-    memset(inputbuf, 0x81, 0x100);
+    memset(inputbuf, 0x81, 0x8);
 
-    char outputbuf[0x100] = { 0 };
+    char outputbuf[0x8] = { 0 };
     
     DWORD bytesReturned = 0;
 
@@ -65,19 +65,19 @@ int main()
         hDevice,
         DeVioctlCode,
         inputbuf,
-        0x100,
+        0x8,
         outputbuf,
-        sizeof(outputbuf),
+        0x8,
         &bytesReturned,
         NULL
     );
 
-    // if (result) {
-    //     printf("IOCTL command sent successfully\n");
-    //     hexdump(inputbuf, 0x100);
-    // } else {
-    //     printf("Failed to send IOCTL command. Error: %ld\n", GetLastError());
-    // }
+    if (result) {
+        printf("IOCTL command sent successfully\n");
+        hexdump(inputbuf, 0x8);
+    } else {
+        printf("Failed to send IOCTL command. Error: %ld\n", GetLastError());
+    }
 
     // free(inputbuf);
     // CloseHandle(hDevice);
